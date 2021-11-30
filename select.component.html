@@ -1,0 +1,27 @@
+<mat-select #selectElement
+            [id]="id"
+            [multiple]="multiple"
+            [attr.aria-describedby]="ariaDescribedby"
+            [attr.aria-labelledby]="parentFormField?.getLabelId()"
+            [formControl]="control"
+            [placeholder]="placeholder"
+            [required]="required"
+            (focusin)="onFocusIn($event)"
+            (focusout)="onFocusOut($event)">
+
+  <mat-option>
+    <ngx-mat-select-search [formControl]="selectFilterCtrl" noEntriesFoundLabel="No results" placeholderLabel="Search">
+    </ngx-mat-select-search>
+  </mat-option>
+
+  <mat-select-trigger *ngIf="multiple && control?.value?.length > 0">
+      <span class="multiple-selection">
+        {{control?.value.length }} {{(control?.value?.length === 1 ? 'item' : 'items')}} selected
+      </span>
+  </mat-select-trigger>
+
+  <mat-option *ngIf="!required && !multiple && !selectFilterCtrl.value" [value]="null">----</mat-option>
+  <mat-option *ngFor="let item of filteredOptions$ | async" [value]="item.id">
+    {{item[mainKey]}}
+  </mat-option>
+</mat-select>
